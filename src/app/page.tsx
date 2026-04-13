@@ -1,10 +1,23 @@
 import axios from "axios";
+import Image from "next/image";
 
 type QiitaResponse = {
   id: string;
   title: string;
   url: string;
   image: string;
+};
+
+type MicrocmsContent = {
+  id: string;
+  title: string;
+  eyecatch: {
+    url: string;
+  };
+};
+
+type MicrocmsResponse = {
+  contents: MicrocmsContent[];
 };
 
 export default async function Home() {
@@ -22,8 +35,12 @@ export default async function Home() {
       title: item.title,
       url: item.url,
       image:
-        "https://pbs.twimg.com/card_img/2018833960445603840/CO8fJxkt?format=jpg&name=large",
+        "https://pbs.twimg.com/card_img/2043467245570113536/peVChdf4?format=jpg&name=large",
     }));
+  };
+
+  const getMicroCMSItems = async () => {
+    const response = await axios.get<MicrocmsContent>();
   };
 
   const qiitaItems = await getQiitaItems();
@@ -33,6 +50,7 @@ export default async function Home() {
       <ul>
         {qiitaItems.map((item) => (
           <li key={item.id}>
+            <Image src={item.image} width={100} height={100} alt="" />
             <a href={item.url}>{item.title}</a>
           </li>
         ))}
