@@ -40,15 +40,38 @@ export default async function Home() {
   };
 
   const getMicroCMSItems = async () => {
-    const response = await axios.get<MicrocmsContent>();
+    const response = await axios.get<MicrocmsResponse>(
+      "https://3xqf61m0kn.microcms.io/api/v1/blogs",
+      {
+        headers: {
+          "X-MICROCMS-API-KEY": process.env.MICROCMS_API_KEY,
+        },
+      },
+    );
+    return response.data.contents.map((item) => ({
+      id: item.id,
+      title: item.title,
+      image: item.eyecatch.url,
+      url: "/blogs/${item.id}",
+    }));
   };
 
   const qiitaItems = await getQiitaItems();
+  const microCMSItems = await getMicroCMSItems();
+
   return (
     <div>
       <h1>Top Page</h1>
       <ul>
         {qiitaItems.map((item) => (
+          <li key={item.id}>
+            <Image src={item.image} width={100} height={100} alt="" />
+            <a href={item.url}>{item.title}</a>
+          </li>
+        ))}
+      </ul>
+      <ul>
+        {microCMSItems.map((item) => (
           <li key={item.id}>
             <Image src={item.image} width={100} height={100} alt="" />
             <a href={item.url}>{item.title}</a>
