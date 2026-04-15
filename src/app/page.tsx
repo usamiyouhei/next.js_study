@@ -1,24 +1,6 @@
 import axios from "axios";
 import Image from "next/image";
-
-type QiitaResponse = {
-  id: string;
-  title: string;
-  url: string;
-  image: string;
-};
-
-type MicrocmsContent = {
-  id: string;
-  title: string;
-  eyecatch: {
-    url: string;
-  };
-};
-
-type MicrocmsResponse = {
-  contents: MicrocmsContent[];
-};
+import { MicrocmsResponse, QiitaResponse } from "../../domain/Article";
 
 export default async function Home() {
   const getQiitaItems = async () => {
