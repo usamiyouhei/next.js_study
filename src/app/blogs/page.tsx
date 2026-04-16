@@ -1,5 +1,6 @@
+"use cache";
+
 import axios from "axios";
-import React from "react";
 import { MicrocmsResponse } from "../../../domain/Article";
 import Image from "next/image";
 
