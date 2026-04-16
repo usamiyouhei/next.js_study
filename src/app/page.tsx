@@ -1,3 +1,5 @@
+"use cache";
+
 import axios from "axios";
 import Image from "next/image";
 import { MicrocmsResponse, QiitaResponse } from "../../domain/Article";
