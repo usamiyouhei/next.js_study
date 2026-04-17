@@ -43,7 +43,7 @@ async function MicroCMSArticles() {
   const items = response.data.contents.map((item) => ({
     id: item.id,
     title: item.title,
-    url: "/blogs/${item.id}",
+    url: `/blogs/${item.id}`,
     image:
       "https://pbs.twimg.com/card_img/2043467245570113536/peVChdf4?format=jpg&name=large",
   }));
