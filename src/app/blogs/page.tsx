@@ -21,7 +21,7 @@ const Blogs = async () => {
       id: item.id,
       title: item.title,
       image: item.eyecatch.url,
-      url: "/blogs/${item.id}",
+      url: `/blogs/${item.id}`,
     }));
   };
 
