@@ -1,25 +1,35 @@
-import axios from "axios";
 import { Suspense } from "react";
-import { MicrocmsContent, MicrocmsResponse } from "../../../../domain/Article";
+import axios from "axios";
 import Image from "next/image";
-import ReloadButton from "./ReloadButton";
+import Link from "next/link";
+import { MicrocmsContent } from "../../../../domain/Article";
+import RealoadButton from "./ReloadButton";
 
-type Params = {
-  id: string;
-};
+function BlogDetailSkeleton() {
+  return (
+    <div className="mx-auto max-w-3xl">
+      <div className="skeleton mb-6 h-8 w-1/3" />
+      <div className="skeleton mb-8 aspect-video w-full rounded-xl" />
+      <div className="space-y-3">
+        <div className="skeleton h-5 w-full" />
+        <div className="skeleton h-5 w-5/6" />
+        <div className="skeleton h-5 w-4/6" />
+        <div className="skeleton h-5 w-full" />
+        <div className="skeleton h-5 w-3/4" />
+      </div>
+    </div>
+  );
+}
 
-async function Blog({ params }: { params: Params }) {
+async function BlogContent({ params }: { params: Promise<{ id: string }> }) {
   "use cache";
   const { id } = await params;
 
-  console.log("id:", id);
-  console.log("MICROCMS_API_KEY exists:", !!process.env.MICROCMS_API_KEY);
-
   const response = await axios.get<MicrocmsContent>(
-    `https://3xqf61m0kn.microcms.io/api/v1/blogs/${id}`,
+    `https://mf2p17uv52.microcms.io/api/v1/blogs/${id}`,
     {
       headers: {
-        "X-MICROCMS-API-KEY": process.env.MICROCMS_API_KEY,
+        "X-MICROCMS-API-KEY": `${process.env.MICROCMS_API_KEY}`,
       },
     },
   );
@@ -27,23 +37,59 @@ async function Blog({ params }: { params: Params }) {
   const blog = response.data;
 
   return (
-    <article>
-      <Image src={blog.eyecatch.url} width={100} height={100} alt="" />
-      <h2>{blog.title}</h2>
-      <div dangerouslySetInnerHTML={{ __html: blog.content }} />
-      <ReloadButton id={id} />
+    <article className="mx-auto max-w-3xl">
+      {/* Back Link */}
+      <Link
+        href="/blogs"
+        className="mb-6 inline-flex items-center gap-1 text-sm font-medium text-muted transition-colors hover:text-accent"
+      >
+        &larr; ブログ一覧に戻る
+      </Link>
+
+      {/* Title */}
+      <h1 className="mb-6 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">
+        {blog.title}
+      </h1>
+
+      {/* Eye Catch */}
+      <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-xl border border-card-border">
+        <Image
+          src={blog.eyecatch.url}
+          alt={blog.title}
+          fill
+          className="object-cover"
+          priority
+        />
+      </div>
+
+      {/* Content */}
+      <div
+        className="prose"
+        dangerouslySetInnerHTML={{ __html: blog.content }}
+      />
+
+      {/* Footer Actions */}
+      <div className="mt-10 flex items-center justify-between border-t border-card-border pt-6">
+        <Link
+          href="/blogs"
+          className="text-sm font-medium text-muted transition-colors hover:text-accent"
+        >
+          &larr; ブログ一覧に戻る
+        </Link>
+        <RealoadButton id={id} />
+      </div>
     </article>
   );
 }
 
-function BlogDetail({ params }: { params: Params }) {
+export default function BlogDetail({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
   return (
-    <div>
-      <h1>ブログ詳細</h1>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Blog params={params} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<BlogDetailSkeleton />}>
+      <BlogContent params={params} />
+    </Suspense>
   );
 }
-export default BlogDetail;
