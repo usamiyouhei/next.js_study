@@ -8,7 +8,7 @@ import Link from "next/link";
 export default async function Blogs() {
   const getBlogs = async () => {
     const response = await axios.get<MicrocmsResponse>(
-      "https://mf2p17uv52.microcms.io/api/v1/blogs",
+      "https://3xqf61m0kn.microcms.io/api/v1/blogs",
       {
         headers: {
           "X-MICROCMS-API-KEY": `${process.env.MICROCMS_API_KEY}`,
