@@ -26,7 +26,7 @@ async function BlogContent({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
 
   const response = await axios.get<MicrocmsContent>(
-    `https://mf2p17uv52.microcms.io/api/v1/blogs/${id}`,
+    `https://3xqf61m0kn.microcms.io/api/v1/blogs/${id}`,
     {
       headers: {
         "X-MICROCMS-API-KEY": `${process.env.MICROCMS_API_KEY}`,
