@@ -74,8 +74,9 @@ async function QiitaArticles() {
 }
 
 async function MicrocmsArticles() {
+  console.log("MICROCMS_API_KEY exists:", !!process.env.MICROCMS_API_KEY);
   const response = await axios.get<MicrocmsResponse>(
-    "https://mf2p17uv52.microcms.io/api/v1/blogs",
+    "https://3xqf61m0kn.microcms.io/api/v1/blogs",
     {
       headers: {
         "X-MICROCMS-API-KEY": `${process.env.MICROCMS_API_KEY}`,
